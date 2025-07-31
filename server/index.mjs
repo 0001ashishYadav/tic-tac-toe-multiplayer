@@ -6,6 +6,8 @@ const clients = {};
 
 let turn = "1";
 
+let isWinnerAnnounced = false;
+
 const data = ["", "", "", "", "", "", "", "", ""];
 
 const winPatterns = [
@@ -29,8 +31,10 @@ const checkWinner = () => {
     if (v1 !== "" && v2 !== "" && v3 !== "" && v1 === v2 && v2 === v3) {
       if (v1 === "0") {
         io.emit("win", "user 2 (0) is the winner");
+        isWinnerAnnounced = true;
       } else {
         io.emit("win", "user 1 (X) is the winner");
+        isWinnerAnnounced = true;
       }
       turn = "";
       setTimeout(() => {
@@ -38,6 +42,17 @@ const checkWinner = () => {
         data = ["", "", "", "", "", "", "", "", ""];
       }, 5000);
     }
+  }
+};
+
+const checkMatchDraw = () => {
+  if (data.every((item) => item !== "") && !isWinnerAnnounced) {
+    io.emit("win", "Match Draw");
+    turn = "";
+    setTimeout(() => {
+      turn = "1";
+      data.fill("");
+    }, 5000);
   }
 };
 
@@ -65,6 +80,7 @@ io.on("connection", (socket) => {
           turn = "1";
         }
         checkWinner();
+        checkMatchDraw();
       }
     }
     io.emit("data", data);
