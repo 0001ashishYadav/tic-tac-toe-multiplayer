@@ -2,6 +2,10 @@ import express from "express";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
 
+const clients = {};
+
+let turn = "1";
+
 const data = ["", "", "", "", "", "", "", "", ""];
 
 const winPatterns = [
@@ -16,30 +20,23 @@ const winPatterns = [
 ];
 
 const checkWinner = () => {
-  let hasWin = false;
   for (let pattern of winPatterns) {
-    let pos1Val = boxes[pattern[0]].innerText;
-    let pos2Val = boxes[pattern[1]].innerText;
-    let pos3Val = boxes[pattern[2]].innerText;
+    console.log(pattern);
+    const v1 = data[pattern[0]];
+    const v2 = data[pattern[1]];
+    const v3 = data[pattern[2]];
 
-    if (
-      pos1Val !== "" &&
-      pos2Val !== "" &&
-      pos3Val !== "" &&
-      pos1Val === pos2Val &&
-      pos2Val === pos3Val
-    ) {
-      showWinner(pos1Val);
-      hasWin = true;
-      return;
-    }
-  }
-
-  if (!hasWin) {
-    const allBoxes = [...boxes].every((box) => box.innerText !== "");
-    if (allBoxes) {
-      msgContainer.classList.remove("hide");
-      msg.innerText = "Match Drawn";
+    if (v1 !== "" && v2 !== "" && v3 !== "" && v1 === v2 && v2 === v3) {
+      if (v1 === "0") {
+        io.emit("win", "user 2 (0) is the winner");
+      } else {
+        io.emit("win", "user 1 (X) is the winner");
+      }
+      turn = "";
+      setTimeout(() => {
+        turn = "1";
+        data = ["", "", "", "", "", "", "", "", ""];
+      }, 5000);
     }
   }
 };
@@ -56,8 +53,29 @@ io.on("connection", (socket) => {
   console.log("a user connected");
   socket.on("input", (e) => {
     console.log(e);
+
+    if (e >= 0 && e < 9) {
+      const clientId = clients[socket.id];
+      if (clientId) {
+        if (turn === "1" && clientId === turn) {
+          data[e] = "X";
+          turn = "2";
+        } else if (turn === "2" && clientId === turn) {
+          data[e] = "0";
+          turn = "1";
+        }
+        checkWinner();
+      }
+    }
     io.emit("data", data);
-    io.emit("win", "apple is winner");
+  });
+
+  socket.on("info", (userId) => {
+    if (!userId || userId > 2 || userId < 0) {
+      return;
+    }
+    clients[socket.id] = userId;
+    console.log(clients);
   });
 });
 
