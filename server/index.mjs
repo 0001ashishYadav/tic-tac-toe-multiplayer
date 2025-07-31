@@ -39,7 +39,7 @@ const checkWinner = () => {
       turn = "";
       setTimeout(() => {
         turn = "1";
-        data = ["", "", "", "", "", "", "", "", ""];
+        data.fill("");
       }, 5000);
     }
   }
