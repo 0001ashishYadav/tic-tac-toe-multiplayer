@@ -5,7 +5,10 @@ if (userId) {
   socket.emit("info", userId);
 }
 
-let boxes = document.querySelectorAll(".box");
+const boxes = document.querySelectorAll(".box");
+const winnerPopup = document.querySelector(".winner-popup");
+const winnerPrg = document.getElementById("winner-prg");
+const resetBtn = document.getElementById("reset-btn");
 
 socket.on("data", (data) => {
   boxes.forEach((box, i) => {
@@ -14,6 +17,8 @@ socket.on("data", (data) => {
 });
 socket.on("win", (win) => {
   console.log(win);
+  winnerPrg.innerHTML = win;
+  winnerPopup.classList.remove("hide");
 });
 
 boxes.forEach((box, i) => {

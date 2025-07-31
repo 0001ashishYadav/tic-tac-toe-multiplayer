@@ -8,6 +8,44 @@ body {
   text-align: center;
 }
 
+.winner-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.winner-popup div {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
+}
+
+#winner-prg {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+#winner-prg,
+#reset-btn {
+  color: black;
+}
+
+#reset-btn {
+  padding: 1rem;
+  font-size: 1.25rem;
+  background: #191913;
+  color: white;
+  border-radius: 1rem;
+  border: none;
+}
+
 .container {
   height: 70vh;
   display: flex;
