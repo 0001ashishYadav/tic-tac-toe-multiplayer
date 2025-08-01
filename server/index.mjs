@@ -47,12 +47,22 @@ const checkWinner = () => {
 
 const checkMatchDraw = () => {
   if (data.every((item) => item !== "") && !isWinnerAnnounced) {
-    io.emit("win", "Match Draw");
+    io.emit("draw", "Match Draw");
     turn = "";
     setTimeout(() => {
       turn = "1";
       data.fill("");
     }, 5000);
+  }
+};
+
+const checkTurn = () => {
+  if (turn === "1") {
+    io.emit("turn", "user 1 (X), it's your turn");
+  } else if (turn === "2") {
+    io.emit("turn", "user 2 (0), it's your turn");
+  } else {
+    io.emit("turn", "Match Over");
   }
 };
 
@@ -81,6 +91,7 @@ io.on("connection", (socket) => {
         }
         checkWinner();
         checkMatchDraw();
+        checkTurn();
       }
     }
     io.emit("data", data);

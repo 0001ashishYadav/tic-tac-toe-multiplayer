@@ -9,6 +9,7 @@ const boxes = document.querySelectorAll(".box");
 const winnerPopup = document.querySelector(".winner-popup");
 const winnerPrg = document.getElementById("winner-prg");
 const resetBtn = document.getElementById("reset-btn");
+const turnPrg = document.getElementById("turn-prg");
 
 socket.on("data", (data) => {
   boxes.forEach((box, i) => {
@@ -16,9 +17,17 @@ socket.on("data", (data) => {
   });
 });
 socket.on("win", (win) => {
-  console.log(win);
   winnerPrg.innerHTML = win;
   winnerPopup.classList.remove("hide");
+});
+
+socket.on("draw", (draw) => {
+  console.log(draw);
+});
+
+socket.on("turn", (turn) => {
+  console.log(turn);
+  turnPrg.innerHTML = turn;
 });
 
 boxes.forEach((box, i) => {

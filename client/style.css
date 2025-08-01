@@ -46,6 +46,12 @@ body {
   border: none;
 }
 
+#turn-prg {
+  font-size: 2rem;
+  margin-top: 1rem;
+  color: black;
+}
+
 .container {
   height: 70vh;
   display: flex;
