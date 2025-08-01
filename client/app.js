@@ -13,7 +13,18 @@ const boxes = document.querySelectorAll(".box");
 const winnerPopup = document.querySelector(".winner-popup");
 const winnerPrg = document.getElementById("winner-prg");
 const resetBtn = document.getElementById("reset-btn");
+const playAgainBtn = document.getElementById("play-again-btn");
 const turnPrg = document.getElementById("turn-prg");
+
+resetBtn.addEventListener("click", () => {
+  socket.emit("reset", "reset");
+  console.log("reset clicked");
+});
+
+playAgainBtn.addEventListener("click", () => {
+  socket.emit("reset", "reset");
+  winnerPopup.classList.add("hide");
+});
 
 socket.on("data", (data) => {
   boxes.forEach((box, i) => {

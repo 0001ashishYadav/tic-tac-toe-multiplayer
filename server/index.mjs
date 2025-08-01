@@ -23,7 +23,6 @@ const winPatterns = [
 
 const checkWinner = () => {
   for (let pattern of winPatterns) {
-    console.log(pattern);
     const v1 = data[pattern[0]];
     const v2 = data[pattern[1]];
     const v3 = data[pattern[2]];
@@ -103,6 +102,15 @@ io.on("connection", (socket) => {
     }
     clients[socket.id] = userId;
     console.log(clients);
+  });
+
+  socket.on("reset", () => {
+    data.fill("");
+    turn = "1";
+    isWinnerAnnounced = false;
+    io.emit("data", data);
+    io.emit("turn", "user 1 (X), it's your turn");
+    // io.emit("win", "");
   });
 });
 
