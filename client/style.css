@@ -8,6 +8,10 @@ body {
   text-align: center;
 }
 
+#user {
+  font-size: 2rem;
+  margin-top: 4rem;
+}
 .winner-popup {
   position: fixed;
   top: 0;

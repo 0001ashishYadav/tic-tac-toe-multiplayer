@@ -5,6 +5,10 @@ if (userId) {
   socket.emit("info", userId);
 }
 
+const userEl = document.getElementById("user");
+
+userEl.innerHTML = `You are user ${userId}`;
+
 const boxes = document.querySelectorAll(".box");
 const winnerPopup = document.querySelector(".winner-popup");
 const winnerPrg = document.getElementById("winner-prg");
@@ -16,6 +20,7 @@ socket.on("data", (data) => {
     box.innerHTML = data[i];
   });
 });
+
 socket.on("win", (win) => {
   winnerPrg.innerHTML = win;
   winnerPopup.classList.remove("hide");
